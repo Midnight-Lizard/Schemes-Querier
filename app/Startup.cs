@@ -8,7 +8,8 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using MidnightLizard.Schemes.Querier.Modules;
+using MidnightLizard.Schemes.Querier.Configuration;
+using MidnightLizard.Schemes.Querier.Container;
 
 namespace MidnightLizard.Schemes.Querier
 {
@@ -23,6 +24,12 @@ namespace MidnightLizard.Schemes.Querier
 
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddSingleton<ElasticSearchConfig>(x =>
+            {
+                var esConfig = new ElasticSearchConfig();
+                Configuration.Bind(esConfig);
+                return esConfig;
+            });
             services.AddSingleton<IDependencyResolver>(s => new FuncDependencyResolver(s.GetRequiredService));
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
             services.AddGraphQL(options =>
@@ -35,6 +42,8 @@ namespace MidnightLizard.Schemes.Querier
         public void ConfigureContainer(ContainerBuilder builder)
         {
             builder.RegisterModule<GraphQLSchemaModule>();
+            builder.RegisterModule<ModelDeserializationModule>();
+            builder.RegisterModule<DataAccessModule>();
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)

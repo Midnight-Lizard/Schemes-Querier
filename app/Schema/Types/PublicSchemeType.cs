@@ -7,9 +7,14 @@ namespace MidnightLizard.Schemes.Querier.Schema.Types
     {
         public PublicSchemeType()
         {
-            Field(x => x.Id);
-            Field(x => x.Name);
-            Field(x => x.Side);
+            this.Field(x => x.Id);
+            this.Field(x => x.Name);
+            this.Field(x => x.Description);
+            this.Field(x => x.Side);
+            this.Field<ColorSchemeType>(nameof(ColorScheme), "Color scheme",
+                resolve: context => context.Source.ColorScheme);
+            this.Field<PublisherType>(nameof(Publisher), "Color scheme publisher",
+                resolve: context => new Publisher(context.Source));
         }
     }
 }
