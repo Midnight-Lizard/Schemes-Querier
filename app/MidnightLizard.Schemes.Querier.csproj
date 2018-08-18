@@ -3,12 +3,12 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp2.1</TargetFramework>
     <Configurations>Debug;Release;Test</Configurations>
+    <LangVersion>Latest</LangVersion>
     <StartupObject>MidnightLizard.Schemes.Querier.Program</StartupObject>
   </PropertyGroup>
 
   <ItemGroup>
     <Folder Include="Controllers\" />
-    <Folder Include="wwwroot\" />
   </ItemGroup>
 
   <ItemGroup>
@@ -22,6 +22,7 @@
     <PackageReference Include="SemanticVersioning" Version="1.2.0" />
   </ItemGroup>
 
+  
 
   <Choose>
     <When Condition=" '$(Configuration)'=='Test' ">
