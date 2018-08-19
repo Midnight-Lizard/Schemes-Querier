@@ -1,0 +1,4 @@
+apiVersion: v1
+description: Midnight Lizard Color Schemes GraphQL Query API
+name: schemes-querier
+version: 0.1.0

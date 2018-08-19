@@ -1,0 +1,13 @@
+# Default values for schemes.
+replicaCount: 1
+image: schemes-querier:latest
+pullPolicy: IfNotPresent
+service:
+  name: schemes-querier
+  type: NodePort
+  externalPort: 80
+  internalPort: 80
+env:
+  ELASTIC_SEARCH_SCHEMES_READ_MODEL_INDEX_NAME: read-model_public-schemes
+  ELASTIC_SEARCH_SCHEMES_READ_MODEL_TYPE_NAME: schemes-read-model
+  ELASTIC_SEARCH_CLIENT_URL: http://ml-es-elasticsearch-client:9200

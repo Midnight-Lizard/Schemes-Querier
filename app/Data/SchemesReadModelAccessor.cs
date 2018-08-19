@@ -60,8 +60,10 @@ namespace MidnightLizard.Schemes.Querier.Data
                         });
                         break;
                     case SchemeList.fav:
+                        filters.Add(new MatchNoneQuery());
                         break;
                     case SchemeList.liked:
+                        filters.Add(new MatchNoneQuery());
                         break;
                     default:
                         break;
