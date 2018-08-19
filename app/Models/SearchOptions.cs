@@ -12,14 +12,14 @@
         public SearchOptions(
             SchemeList list,
             SchemeSide side,
-            string nameFilter,
+            string query,
             string publisherId,
             int pageSize,
             string cursor)
         {
             this.List = list;
             this.Side = side;
-            this.Query = nameFilter;
+            this.Query = query;
             this.PublisherId = publisherId;
             this.PageSize = pageSize;
             this.Cursor = cursor;

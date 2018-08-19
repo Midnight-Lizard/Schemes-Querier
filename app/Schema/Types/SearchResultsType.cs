@@ -3,16 +3,16 @@ using MidnightLizard.Schemes.Querier.Models;
 
 namespace MidnightLizard.Schemes.Querier.Schema.Types
 {
-    public class SearchResultType<TModel, TModelType> : ObjectGraphType<SearchResult<TModel>>
+    public class SearchResultsType<TModel, TModelType> : ObjectGraphType<SearchResults<TModel>>
         where TModel : VersionedModel
         where TModelType : ObjectGraphType<TModel>
     {
-        public SearchResultType()
+        public SearchResultsType()
         {
             this.Field(x => x.Cursor, nullable: true);
             this.Field<ListGraphType<TModelType>>(
-                nameof(SearchResult<TModel>.Models),
-                resolve: context => context.Source.Models);
+                nameof(SearchResults<TModel>.Results),
+                resolve: context => context.Source.Results);
         }
     }
 }

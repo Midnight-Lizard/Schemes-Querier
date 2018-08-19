@@ -2,8 +2,8 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.1</TargetFramework>
-    <Configurations>Debug;Release;Test</Configurations>
     <LangVersion>Latest</LangVersion>
+    <Configurations>Debug;Release;Test</Configurations>
     <StartupObject>MidnightLizard.Schemes.Querier.Program</StartupObject>
   </PropertyGroup>
 
@@ -17,8 +17,6 @@
     <PackageReference Include="NEST" Version="6.2.0" />
     <PackageReference Include="SemanticVersioning" Version="1.2.0" />
   </ItemGroup>
-
-  
 
   <Choose>
     <When Condition=" '$(Configuration)'=='Test' ">

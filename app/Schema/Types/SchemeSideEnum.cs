@@ -3,10 +3,11 @@ using MidnightLizard.Schemes.Querier.Models;
 
 namespace MidnightLizard.Schemes.Querier.Schema.Types
 {
-    public class SchemeSideEnum : EnumerationGraphType<SchemeSide>
+    public class SchemeSideEnum : EnumerationGraphType
     {
         public SchemeSideEnum()
         {
+            this.Name = nameof(SchemeSide);
             this.Description = "Splits schemes by background lightness into two sides: dark or light";
             this.AddValue(nameof(SchemeSide.none), "", nameof(SchemeSide.none));
             this.AddValue(nameof(SchemeSide.dark), "", nameof(SchemeSide.dark));

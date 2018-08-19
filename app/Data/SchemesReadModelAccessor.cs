@@ -12,7 +12,7 @@ namespace MidnightLizard.Schemes.Querier.Data
 {
     public interface ISchemesReadModelAccessor : IReadModelAccessor<PublicScheme>
     {
-        Task<SearchResult<PublicScheme>> SearchSchemesAsync(SearchOptions options);
+        Task<SearchResults<PublicScheme>> SearchSchemesAsync(SearchOptions options);
     }
 
     public class SchemesReadModelAccessor : ReadModelAccessor<PublicScheme>, ISchemesReadModelAccessor
@@ -25,7 +25,7 @@ namespace MidnightLizard.Schemes.Querier.Data
         {
         }
 
-        public async Task<SearchResult<PublicScheme>> SearchSchemesAsync(SearchOptions options)
+        public async Task<SearchResults<PublicScheme>> SearchSchemesAsync(SearchOptions options)
         {
             var filters = new List<QueryBase>();
             if (!string.IsNullOrWhiteSpace(options.Query))
@@ -89,9 +89,9 @@ namespace MidnightLizard.Schemes.Querier.Data
             });
             if (results.IsValid)
             {
-                return new SearchResult<PublicScheme>
+                return new SearchResults<PublicScheme>
                 {
-                    Models = results.Documents,
+                    Results = results.Documents,
                     Cursor = Convert
                         .ToBase64String(Encoding.UTF8
                         .GetBytes(string

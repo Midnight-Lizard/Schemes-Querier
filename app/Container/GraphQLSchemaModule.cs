@@ -20,7 +20,7 @@ namespace MidnightLizard.Schemes.Querier.Container
             builder.RegisterType<ColorSchemeType>().AsSelf();
             builder.RegisterType<SchemeSideEnum>().AsSelf();
             builder.RegisterType<SchemeListEnum>().AsSelf();
-            builder.RegisterGeneric(typeof(SearchResultType<,>)).AsSelf();
+            builder.RegisterGeneric(typeof(SearchResultsType<,>)).AsSelf();
         }
     }
 }

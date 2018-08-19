@@ -2,9 +2,9 @@
 
 namespace MidnightLizard.Schemes.Querier.Models
 {
-    public class SearchResult<TModel> where TModel : VersionedModel
+    public class SearchResults<TModel> where TModel : VersionedModel
     {
         public string Cursor { get; set; }
-        public IEnumerable<TModel> Models { get; set; }
+        public IEnumerable<TModel> Results { get; set; }
     }
 }

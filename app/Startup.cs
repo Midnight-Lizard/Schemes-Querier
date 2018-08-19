@@ -10,6 +10,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using MidnightLizard.Schemes.Querier.Configuration;
 using MidnightLizard.Schemes.Querier.Container;
+using MidnightLizard.Schemes.Querier.Schema;
 
 namespace MidnightLizard.Schemes.Querier
 {
@@ -39,7 +40,7 @@ namespace MidnightLizard.Schemes.Querier
             });
         }
 
-        public void ConfigureContainer(ContainerBuilder builder)
+        public virtual void ConfigureContainer(ContainerBuilder builder)
         {
             builder.RegisterModule<GraphQLSchemaModule>();
             builder.RegisterModule<ModelDeserializationModule>();
@@ -60,12 +61,12 @@ namespace MidnightLizard.Schemes.Querier
 
             app.UseMvc();
 
-            app.UseGraphQL<ISchema>("/query");
+            app.UseGraphQL<ISchema>(Routes.Query);
 
             app.UseGraphQLPlayground(new GraphQLPlaygroundOptions
             {
-                Path = "/ui",
-                GraphQLEndPoint = "/query"
+                Path = Routes.Playground,
+                GraphQLEndPoint = Routes.Query
             });
         }
     }
