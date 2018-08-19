@@ -10,7 +10,9 @@ namespace MidnightLizard.Schemes.Querier.Schema.Types
             this.Field(x => x.Id);
             this.Field(x => x.Name);
             this.Field(x => x.Description);
-            this.Field(x => x.Side);
+            this.Field<SchemeSideEnum>(nameof(PublicScheme.Side),
+                "Splits schemes by background lightness into two sides: dark or light",
+                resolve: context => context.Source.Side);
             this.Field<ColorSchemeType>(nameof(ColorScheme), "Color scheme",
                 resolve: context => context.Source.ColorScheme);
             this.Field<PublisherType>(nameof(Publisher), "Color scheme publisher",

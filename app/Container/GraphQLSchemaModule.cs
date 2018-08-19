@@ -1,5 +1,9 @@
 ﻿using Autofac;
+using GraphQL;
+using GraphQL.Execution;
 using GraphQL.Types;
+using GraphQL.Validation;
+using GraphQL.Validation.Complexity;
 using MidnightLizard.Schemes.Querier.Schema;
 using MidnightLizard.Schemes.Querier.Schema.Types;
 
@@ -14,6 +18,9 @@ namespace MidnightLizard.Schemes.Querier.Container
             builder.RegisterType<PublicSchemeType>().AsSelf();
             builder.RegisterType<PublisherType>().AsSelf();
             builder.RegisterType<ColorSchemeType>().AsSelf();
+            builder.RegisterType<SchemeSideEnum>().AsSelf();
+            builder.RegisterType<SchemeListEnum>().AsSelf();
+            builder.RegisterGeneric(typeof(SearchResultType<,>)).AsSelf();
         }
     }
 }

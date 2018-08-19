@@ -4,7 +4,7 @@
     {
         public string Name { get; set; }
         public string Description { get; set; }
-        public string Side { get; set; }
+        public SchemeSide Side { get; set; }
         public ColorScheme ColorScheme { get; set; }
 
         public string PublisherId { get; set; }

@@ -9,7 +9,7 @@ namespace MidnightLizard.Schemes.Querier.Container
         protected override void Load(ContainerBuilder builder)
         {
             builder.RegisterType<SchemesReadModelAccessor>()
-                .As<IReadModelAccessor<PublicScheme>>()
+                .AsImplementedInterfaces()
                 .SingleInstance();
         }
     }

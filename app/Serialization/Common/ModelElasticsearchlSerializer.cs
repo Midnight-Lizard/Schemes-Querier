@@ -1,5 +1,6 @@
 ﻿using Elasticsearch.Net;
 using MidnightLizard.Schemes.Querier.Models;
+using Newtonsoft.Json;
 using System;
 using System.IO;
 using System.Threading;
@@ -7,11 +8,11 @@ using System.Threading.Tasks;
 
 namespace MidnightLizard.Schemes.Querier.Serialization.Common
 {
-    public class ModelElasticsearchlDeserializer<TModel> : IElasticsearchSerializer where TModel : VersionedModel
+    public class ModelElasticsearchlSerializer<TModel> : IElasticsearchSerializer where TModel : VersionedModel
     {
         private readonly IModelDeserializer<TModel> modelDeserializer;
 
-        public ModelElasticsearchlDeserializer(IModelDeserializer<TModel> modelDeserializer)
+        public ModelElasticsearchlSerializer(IModelDeserializer<TModel> modelDeserializer)
         {
             this.modelDeserializer = modelDeserializer;
         }
@@ -54,17 +55,25 @@ namespace MidnightLizard.Schemes.Querier.Serialization.Common
 
         public void Serialize<T>(T data, Stream stream, SerializationFormatting formatting = SerializationFormatting.Indented)
         {
-            throw new NotSupportedException();
+            var json = this.SerializeToString(data);
+            using (var writer = new StreamWriter(stream))
+            {
+                writer.Write(json);
+            }
         }
 
         public async Task SerializeAsync<T>(T data, Stream stream, SerializationFormatting formatting = SerializationFormatting.Indented, CancellationToken cancellationToken = default)
         {
-            throw new NotSupportedException();
+            var json = this.SerializeToString(data);
+            using (var writer = new StreamWriter(stream))
+            {
+                await writer.WriteAsync(json);
+            }
         }
 
         private string SerializeToString<T>(T data)
         {
-            throw new NotSupportedException();
+            return JsonConvert.SerializeObject(data);
         }
     }
 }

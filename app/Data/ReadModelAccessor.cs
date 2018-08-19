@@ -10,7 +10,7 @@ namespace MidnightLizard.Schemes.Querier.Data
 {
     public interface IReadModelAccessor<TModel> where TModel : VersionedModel
     {
-        Task<TModel> ReadModelAsync(string id);
+        Task<TModel> ReadModelAsync(string modelId);
     }
 
     public abstract class ReadModelAccessor<TModel> : IReadModelAccessor<TModel> where TModel : VersionedModel
@@ -33,13 +33,13 @@ namespace MidnightLizard.Schemes.Querier.Data
             var node = new Uri(this.config.ELASTIC_SEARCH_CLIENT_URL);
             return new ElasticClient(this.InitDefaultMapping(new ConnectionSettings(
                 new SingleNodeConnectionPool(node),
-                (builtin, settings) => new ModelElasticsearchlDeserializer<TModel>(this.modelDeserializer))));
+                (builtin, settings) => new ModelElasticsearchlSerializer<TModel>(this.modelDeserializer))));
         }
 
         protected virtual ConnectionSettings InitDefaultMapping(ConnectionSettings connectionSettings)
         {
             return connectionSettings
-                .DefaultFieldNameInferrer(i => i.ToUpper())
+                .DefaultFieldNameInferrer(i => i/*.ToUpper()*/)
                 .DefaultMappingFor<TModel>(map => map
                      .IdProperty(to => to.Id)
                      .RoutingProperty(x => x.Id)
@@ -47,9 +47,9 @@ namespace MidnightLizard.Schemes.Querier.Data
                      .TypeName(this.TypeName));
         }
 
-        public async Task<TModel> ReadModelAsync(string id)
+        public async Task<TModel> ReadModelAsync(string modelId)
         {
-            var result = await this.elasticClient.GetAsync<TModel>(new DocumentPath<TModel>(id));
+            var result = await this.elasticClient.GetAsync<TModel>(new DocumentPath<TModel>(modelId));
             if (!result.IsValid)
             {
                 throw new ApplicationException("Failed to read model from the store",
