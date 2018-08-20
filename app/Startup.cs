@@ -28,10 +28,11 @@ namespace MidnightLizard.Schemes.Querier
             services.AddSingleton<ElasticSearchConfig>(x =>
             {
                 var esConfig = new ElasticSearchConfig();
-                Configuration.Bind(esConfig);
+                this.Configuration.Bind(esConfig);
                 return esConfig;
             });
             services.AddSingleton<IDependencyResolver>(s => new FuncDependencyResolver(s.GetRequiredService));
+
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
             services.AddGraphQL(options =>
             {
@@ -58,6 +59,12 @@ namespace MidnightLizard.Schemes.Querier
                 //app.UseHsts();
                 //app.UseHttpsRedirection();
             }
+
+            var corsConfig = new CorsConfig();
+            this.Configuration.Bind(corsConfig);
+            app.UseCors(builder => builder
+                .WithOrigins(corsConfig.ALLOWED_ORIGINS.Split(','))
+                .AllowAnyHeader().AllowAnyMethod());
 
             app.UseMvc();
 

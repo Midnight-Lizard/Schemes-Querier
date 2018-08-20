@@ -11,3 +11,8 @@ env:
   ELASTIC_SEARCH_SCHEMES_READ_MODEL_INDEX_NAME: read-model_public-schemes
   ELASTIC_SEARCH_SCHEMES_READ_MODEL_TYPE_NAME: schemes-read-model
   ELASTIC_SEARCH_CLIENT_URL: http://ml-es-elasticsearch-client:9200
+  ALLOWED_ORIGINS: "\
+    http://midnight-lizard.org,\
+    https://midnight-lizard.org,\
+    http://www.midnight-lizard.org,\
+    https://www.midnight-lizard.org"
