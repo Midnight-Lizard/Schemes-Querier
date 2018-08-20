@@ -3,7 +3,7 @@
     public class PublicScheme : VersionedModel
     {
         public string Name { get; set; }
-        public string Description { get; set; }
+        public string Description { get; set; } = "There is no description for this color scheme.";
         public SchemeSide Side { get; set; }
         public ColorScheme ColorScheme { get; set; }
 

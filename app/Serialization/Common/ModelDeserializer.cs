@@ -33,7 +33,7 @@ namespace MidnightLizard.Schemes.Querier.Serialization.Common
         {
             try
             {
-                var version = JObject.Parse(message)[nameof(PublicScheme.SchemaVersion).ToUpper()]?.Value<string>() ?? "9.3.0";
+                var version = JsonConvert.DeserializeObject<VersionedModel>(message).SchemaVersion;
                 var deserializer = this.versionedDeserializers.FirstOrDefault(x =>
                     x.Metadata[nameof(Type)] as string == this.modelTypeName &&
                     (x.Metadata["VersionRange"] as Range).IsSatisfied(version));

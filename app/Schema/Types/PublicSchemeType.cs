@@ -17,6 +17,11 @@ namespace MidnightLizard.Schemes.Querier.Schema.Types
                 resolve: context => context.Source.ColorScheme);
             this.Field<PublisherType>(nameof(Publisher), "Color scheme publisher",
                 resolve: context => new Publisher(context.Source));
+            this.Field<ListGraphType<ScreenshotType>>(nameof(Screenshot) + "s", "Color scheme screenshots",
+                resolve: context => new[] { new Screenshot {
+                    Title = "Fake screenshot",
+                    Urls = new ScreenshotUrls(randomScreenshots: true)
+                } });
         }
     }
 }

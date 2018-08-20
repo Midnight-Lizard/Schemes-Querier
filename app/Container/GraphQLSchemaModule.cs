@@ -21,6 +21,8 @@ namespace MidnightLizard.Schemes.Querier.Container
             builder.RegisterType<SchemeSideEnum>().AsSelf();
             builder.RegisterType<SchemeListEnum>().AsSelf();
             builder.RegisterType<SchemesSearchResultsType>().AsSelf();
+            builder.RegisterType<ScreenshotType>().AsSelf();
+            builder.RegisterType<ScreenshotUrlsType>().AsSelf();
         }
     }
 }
