@@ -18,7 +18,7 @@ namespace MidnightLizard.Schemes.Querier.Schema
                 new QueryArguments(new QueryArgument<IdGraphType> { Name = nameof(PublicScheme.Id) }),
                 resolve: async context => await accessor.ReadModelAsync(context.Arguments.Values.First() as string));
 
-            this.FieldAsync<SearchResultsType<PublicScheme, PublicSchemeType>, SearchResults<PublicScheme>>(
+            this.FieldAsync<SchemesSearchResultsType, SearchResults<PublicScheme>>(
                 "search", "Search Midnight Lizard's color schemes",
                 new QueryArguments(
                     new QueryArgument<SchemeListEnum> { Name = nameof(SearchOptions.List), DefaultValue = SchemeList.full.ToString() },

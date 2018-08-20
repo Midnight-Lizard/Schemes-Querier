@@ -91,6 +91,7 @@ namespace MidnightLizard.Schemes.Querier.Data
             {
                 return new SearchResults<PublicScheme>
                 {
+                    Done = results.Documents.Count() < options.PageSize,
                     Results = results.Documents,
                     Cursor = Convert
                         .ToBase64String(Encoding.UTF8
