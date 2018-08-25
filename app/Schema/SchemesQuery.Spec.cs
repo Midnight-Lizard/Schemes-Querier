@@ -33,6 +33,8 @@ namespace MidnightLizard.Schemes.Querier.Schema
                 .ConfigureTestServices(services => services
                     .AddSingleton<ISchemesReadModelAccessor>(this.testAccessor))
                 .UseSetting(nameof(ElasticSearchConfig.ELASTIC_SEARCH_CLIENT_URL), "http://test.com")
+                .UseSetting(nameof(CorsConfig.ALLOWED_ORIGINS), "http://localhost")
+                .UseSetting(nameof(AuthConfig.NoErrors), true.ToString())
                 .UseSetting(nameof(ElasticSearchConfig.ELASTIC_SEARCH_SCHEMES_READ_MODEL_INDEX_NAME), "test")
                 .UseSetting(nameof(ElasticSearchConfig.ELASTIC_SEARCH_SCHEMES_READ_MODEL_TYPE_NAME), "test")
                 .UseStartup<StartupStub>());

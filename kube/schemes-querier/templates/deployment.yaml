@@ -42,10 +42,10 @@ spec:
             periodSeconds: 20
             timeoutSeconds: 5
           env:
-            - name: IDENTITY_SCHEMES_COMMANDER_API_SECRET
+            - name: IDENTITY_SCHEMES_QUERIER_API_SECRET
               valueFrom:
                 secretKeyRef:
-                  name: identity-schemes-commander-secret
+                  name: identity-schemes-querier-secret
                   key: apiSecret
             {{- range $key, $val := .Values.env }}
             - name: {{ $key }}
