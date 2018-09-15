@@ -1,4 +1,4 @@
-﻿using MidnightLizard.Schemes.Querier.Configuration;
+using MidnightLizard.Schemes.Querier.Configuration;
 using MidnightLizard.Schemes.Querier.Models;
 using MidnightLizard.Schemes.Querier.Serialization.Common;
 using Nest;
@@ -42,12 +42,22 @@ namespace MidnightLizard.Schemes.Querier.Data
             }
             if (options.Side != SchemeSide.none)
             {
-                filters.Add(new TermQuery
+                var rangeQuery = new NumericRangeQuery
                 {
-                    Field = nameof(PublicScheme.Side).ToUpper(),
-                    Value = options.Side.ToString()
-                });
+                    Field = $"{nameof(PublicScheme.ColorScheme)}.{nameof(ColorScheme.backgroundLightnessLimit)}".ToUpper(),
+                };
+                switch (options.Side)
+                {
+                    case SchemeSide.dark:
+                        rangeQuery.LessThan = 30;
+                        break;
+                    case SchemeSide.light:
+                        rangeQuery.GreaterThan = 70;
+                        break;
+                }
+                filters.Add(rangeQuery);
             }
+
             if (!string.IsNullOrWhiteSpace(options.PublisherId))
             {
                 switch (options.List)
