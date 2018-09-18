@@ -1,4 +1,4 @@
-using MidnightLizard.Schemes.Querier.Configuration;
+﻿using MidnightLizard.Schemes.Querier.Configuration;
 using MidnightLizard.Schemes.Querier.Models;
 using MidnightLizard.Schemes.Querier.Serialization.Common;
 using Nest;
@@ -82,6 +82,14 @@ namespace MidnightLizard.Schemes.Querier.Data
             else if (new[] { SchemeList.my, SchemeList.fav, SchemeList.liked }.Contains(options.List))
             {
                 filters.Add(new MatchNoneQuery());
+            }
+            if (new[] { SchemeList.com, SchemeList.ml }.Contains(options.List))
+            {
+                filters.Add(new TermQuery
+                {
+                    Field = nameof(PublicScheme.PublisherCommunity).ToUpper(),
+                    Value = options.List == SchemeList.com
+                });
             }
             var results = await this.elasticClient.SearchAsync<PublicScheme>(s =>
             {

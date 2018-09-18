@@ -9,7 +9,7 @@ service:
   internalPort: 80
 env:
   IDENTITY_URL: http://identity.midnight-lizard.org
-  ELASTIC_SEARCH_SCHEMES_READ_MODEL_INDEX_NAME: read-model_public-schemes
+  ELASTIC_SEARCH_SCHEMES_READ_MODEL_INDEX_NAME: ksql-table_read-model_public-schemes
   ELASTIC_SEARCH_SCHEMES_READ_MODEL_TYPE_NAME: schemes-read-model
   ELASTIC_SEARCH_CLIENT_URL: http://ml-es-elasticsearch-client:9200
   ALLOWED_ORIGINS: "\

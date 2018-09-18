@@ -8,5 +8,6 @@ namespace MidnightLizard.Schemes.Querier.Configuration
     public class AuthConfig
     {
         public bool NoErrors { get; set; }
+        public bool NoAuth { get; set; }
     }
 }
