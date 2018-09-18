@@ -35,6 +35,10 @@ namespace MidnightLizard.Schemes.Querier.Schema
                 .UseSetting(nameof(ElasticSearchConfig.ELASTIC_SEARCH_CLIENT_URL), "http://test.com")
                 .UseSetting(nameof(CorsConfig.ALLOWED_ORIGINS), "http://localhost")
                 .UseSetting(nameof(AuthConfig.NoErrors), true.ToString())
+                .UseSetting(nameof(ScreenshotsConfig.SCREENSHOT_SIZES), "test")
+                .UseSetting(nameof(ScreenshotsConfig.SCREENSHOT_URL_TITLES), "test")
+                .UseSetting(nameof(ScreenshotsConfig.SCREENSHOT_CDN_ID_TEMPLATE), "test")
+                .UseSetting(nameof(ScreenshotsConfig.SCREENSHOT_CDN_URL_TEMPLATE), "test")
                 .UseSetting(nameof(ElasticSearchConfig.ELASTIC_SEARCH_SCHEMES_READ_MODEL_INDEX_NAME), "test")
                 .UseSetting(nameof(ElasticSearchConfig.ELASTIC_SEARCH_SCHEMES_READ_MODEL_TYPE_NAME), "test")
                 .UseStartup<StartupStub>());
@@ -67,7 +71,6 @@ namespace MidnightLizard.Schemes.Querier.Schema
   details(id: $id) {
     id
     name
-    side
     colorScheme {
       colorSchemeId
       colorSchemeName
@@ -168,7 +171,6 @@ namespace MidnightLizard.Schemes.Querier.Schema
                 var result = JObject.Parse(await response.Content.ReadAsStringAsync())["data"]["details"];
 
                 result["id"].Value<string>().Should().Be(this.testScheme.Id);
-                result["side"].Value<string>().Should().Be(this.testScheme.Side.ToString());
                 result["name"].Value<string>().Should().Be(this.testScheme.Name);
                 result["colorScheme"]["colorSchemeName"].Value<string>().Should().Be(this.testScheme.ColorScheme.colorSchemeName);
                 result["colorScheme"]["backgroundLightnessLimit"].Value<int>().Should().Be(this.testScheme.ColorScheme.backgroundLightnessLimit);
@@ -191,7 +193,6 @@ namespace MidnightLizard.Schemes.Querier.Schema
     results {
       id
       name
-      side
       publisher {
         id
         name
@@ -320,7 +321,6 @@ namespace MidnightLizard.Schemes.Querier.Schema
                 result["cursor"].Value<string>().Should().Be(this.testNextCursor);
                 var scheme = result["results"][0];
                 scheme["id"].Value<string>().Should().Be(this.testScheme.Id);
-                scheme["side"].Value<string>().Should().Be(this.testScheme.Side.ToString());
                 scheme["name"].Value<string>().Should().Be(this.testScheme.Name);
                 scheme["colorScheme"]["colorSchemeName"].Value<string>().Should().Be(this.testScheme.ColorScheme.colorSchemeName);
                 scheme["colorScheme"]["backgroundLightnessLimit"].Value<int>().Should().Be(this.testScheme.ColorScheme.backgroundLightnessLimit);

@@ -29,6 +29,9 @@ namespace MidnightLizard.Schemes.Querier
 
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddOptions();
+            services.Configure<ScreenshotsConfig>(this.Configuration);
+
             services.AddSingleton<ElasticSearchConfig>(x =>
             {
                 var esConfig = new ElasticSearchConfig();
@@ -45,7 +48,8 @@ namespace MidnightLizard.Schemes.Querier
             })
             .AddUserContextBuilder(httpContext =>
             {
-                if (httpContext.User.Identity.IsAuthenticated)
+                if (httpContext.User.Identity.IsAuthenticated ||
+                    !string.IsNullOrEmpty(this.Configuration.GetValue<string>(nameof(AuthConfig.NoAuth))))
                 {
                     return new GraphQLUserContext { User = httpContext.User };
                 }
