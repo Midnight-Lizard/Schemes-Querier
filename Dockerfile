@@ -3,8 +3,8 @@
 #===========================================#
 FROM microsoft/dotnet:2.1-sdk as dotnet-build
 ARG DOTNET_CONFIG=Release
-COPY /app/*.csproj /build/
 WORKDIR /build
+COPY /app/*.csproj ./
 RUN dotnet restore
 COPY /app/ .
 RUN dotnet publish -c ${DOTNET_CONFIG} -o ./results
@@ -21,7 +21,7 @@ RUN dotnet test -c Test
 #				IMAGE	BUILD				#
 #===========================================#
 FROM microsoft/dotnet:2.1-aspnetcore-runtime as image
-ARG INSTALL_CLRDBG
+ARG INSTALL_CLRDBG=exit
 RUN bash -c "${INSTALL_CLRDBG}"
 WORKDIR /app
 EXPOSE 80
