@@ -12,7 +12,7 @@ namespace MidnightLizard.Schemes.Querier.Schema.Types
     public class PublicSchemeType : ObjectGraphType<PublicScheme>
     {
         private readonly ScreenshotsConfig config;
-        private readonly string[] titles;
+        private readonly IEnumerable<(string text, string kebab)> titles;
         private readonly Dictionary<string, string> sizes;
 
         public PublicSchemeType(IOptions<ScreenshotsConfig> screenshotsConfig)
@@ -38,14 +38,14 @@ namespace MidnightLizard.Schemes.Querier.Schema.Types
                 from title in this.titles
                 select new Screenshot
                 {
-                    Title = title,
+                    Title = title.text,
                     Urls = new ScreenshotUrls
                     {
-                        xs = this.GetScreenshotUrl(publicScheme, title, this.sizes.GetValueOrDefault(nameof(ScreenshotUrls.xs))),
-                        sm = this.GetScreenshotUrl(publicScheme, title, this.sizes.GetValueOrDefault(nameof(ScreenshotUrls.sm))),
-                        md = this.GetScreenshotUrl(publicScheme, title, this.sizes.GetValueOrDefault(nameof(ScreenshotUrls.md))),
-                        lg = this.GetScreenshotUrl(publicScheme, title, this.sizes.GetValueOrDefault(nameof(ScreenshotUrls.lg))),
-                        xl = this.GetScreenshotUrl(publicScheme, title, this.sizes.GetValueOrDefault(nameof(ScreenshotUrls.xl)))
+                        xs = this.GetScreenshotUrl(publicScheme, title.kebab, this.sizes.GetValueOrDefault(nameof(ScreenshotUrls.xs))),
+                        sm = this.GetScreenshotUrl(publicScheme, title.kebab, this.sizes.GetValueOrDefault(nameof(ScreenshotUrls.sm))),
+                        md = this.GetScreenshotUrl(publicScheme, title.kebab, this.sizes.GetValueOrDefault(nameof(ScreenshotUrls.md))),
+                        lg = this.GetScreenshotUrl(publicScheme, title.kebab, this.sizes.GetValueOrDefault(nameof(ScreenshotUrls.lg))),
+                        xl = this.GetScreenshotUrl(publicScheme, title.kebab, this.sizes.GetValueOrDefault(nameof(ScreenshotUrls.xl)))
                     }
                 }
             ).ToArray();
@@ -66,12 +66,11 @@ namespace MidnightLizard.Schemes.Querier.Schema.Types
                 .ToDictionary(x => x.Groups[1].Value, x => x.Groups[2].Value);
         }
 
-        private string[] GetTitles()
+        private IEnumerable<(string text, string kebab)> GetTitles()
         {
             return this.config.SCREENSHOT_URL_TITLES
                 .Split(',', '~', StringSplitOptions.RemoveEmptyEntries)
-                .Select(x => Regex.Replace(x, "\\s", "-").ToLower())
-                .ToArray();
+                .Select(x => (x, Regex.Replace(x, "\\s", "-").ToLower()));
         }
     }
 }
