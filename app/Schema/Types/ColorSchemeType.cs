@@ -67,6 +67,8 @@ namespace MidnightLizard.Schemes.Querier.Schema.Types
             this.Field(x => x.linkHueGravity);
             this.Field(x => x.borderHueGravity);
             this.Field(x => x.scrollbarStyle, nullable: true);
+            this.Field(x => x.hideBigBackgroundImages);
+            this.Field(x => x.maxBackgroundImageSize);
         }
     }
 }

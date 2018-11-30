@@ -71,6 +71,8 @@ namespace MidnightLizard.Schemes.Querier.Models
 
         public int backgroundImageLightnessLimit { get; set; }
         public int backgroundImageSaturationLimit { get; set; }
+        public int maxBackgroundImageSize { get; set; }
+        public bool hideBigBackgroundImages { get; set; }
 
         public int scrollbarSaturationLimit { get; set; }
         public int scrollbarContrast { get; set; }
