@@ -24,6 +24,7 @@ namespace MidnightLizard.Schemes.Querier.Schema.Types
             this.Field(x => x.Id);
             this.Field(x => x.Name);
             this.Field(x => x.Description);
+            this.Field(x => x.Generation);
             this.Field<ColorSchemeType>(nameof(ColorScheme), "Color scheme",
                 resolve: context => context.Source.ColorScheme);
             this.Field<PublisherType>(nameof(Publisher), "Color scheme publisher",
