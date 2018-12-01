@@ -73,9 +73,9 @@ namespace MidnightLizard.Schemes.Querier
                     options.ApiName = "schemes-querier";
                     options.ApiSecret = this.Configuration.GetValue<string>("IDENTITY_SCHEMES_QUERIER_API_SECRET");
 
-                    options.EnableCaching = true;
+                    options.EnableCaching = false;
                     options.CacheDuration = TimeSpan.FromMinutes(4); // default = 10
-                    options.JwtValidationClockSkew = TimeSpan.FromMinutes(1);
+                    options.JwtValidationClockSkew = TimeSpan.FromMinutes(4);
                 });
         }
 
