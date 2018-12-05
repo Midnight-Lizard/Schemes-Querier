@@ -94,8 +94,8 @@ namespace MidnightLizard.Schemes.Querier
             }
             else
             {
-                app.UseHsts();
-                app.UseHttpsRedirection();
+                // app.UseHsts();
+                // app.UseHttpsRedirection();
             }
 
             var corsConfig = new CorsConfig();
