@@ -63,7 +63,7 @@ namespace MidnightLizard.Schemes.Querier
             services.AddAuthentication(IdentityServerAuthenticationDefaults.AuthenticationScheme)
                 .AddIdentityServerAuthentication(options =>
                 {
-                    options.RequireHttpsMetadata = false;
+                    options.RequireHttpsMetadata = true;
 
                     // base-address of your identityserver
                     options.Authority = this.Configuration
@@ -94,8 +94,8 @@ namespace MidnightLizard.Schemes.Querier
             }
             else
             {
-                //app.UseHsts();
-                //app.UseHttpsRedirection();
+                app.UseHsts();
+                app.UseHttpsRedirection();
             }
 
             var corsConfig = new CorsConfig();
