@@ -34,10 +34,10 @@ namespace MidnightLizard.Schemes.Querier.Data
                 {
                     Query = options.Query,
                     Fields = new[] {
-                        nameof(PublicScheme.Name).ToUpper(),
-                        nameof(PublicScheme.Description).ToUpper(),
+                        nameof(PublicScheme.Name).ToUpper() + "^1.2",
+                        nameof(PublicScheme.Description).ToUpper() + "^1.1",
                         nameof(PublicScheme.PublisherName).ToUpper()
-                    }
+                    },
                 });
             }
             if (options.Side != SchemeSide.none)
@@ -103,7 +103,11 @@ namespace MidnightLizard.Schemes.Querier.Data
                         .Split(',')
                         .ToArray());
                 }
-                return query.Sort(ss => ss.Descending(SortSpecialField.Score).Ascending("_id")).Size(options.PageSize);
+                return query
+                    .Sort(ss => ss
+                        .Descending(SortSpecialField.Score)
+                        .Ascending(SortSpecialField.DocumentIndexOrder))
+                    .Size(options.PageSize);
             });
             if (results.IsValid)
             {
