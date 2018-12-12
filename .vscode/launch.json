@@ -9,7 +9,7 @@
             "type": "coreclr",
             "request": "launch",
             "preLaunchTask": "build",
-            "program": "${workspaceFolder}/app/bin/Debug/netcoreapp2.1/MidnightLizard.Schemes.Querier.dll",
+            "program": "${workspaceFolder}/app/bin/Debug/netcoreapp2.2/MidnightLizard.Schemes.Querier.dll",
             "args": [],
             "cwd": "${workspaceFolder}/app",
             "stopAtEntry": false,

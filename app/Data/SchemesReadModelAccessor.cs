@@ -105,7 +105,7 @@ namespace MidnightLizard.Schemes.Querier.Data
                         .ToArray());
                 }
                 return query
-                    .Sort(ss => ss.Descending(SortSpecialField.Score))
+                    .Sort(ss => ss.Descending(SortSpecialField.Score).Ascending(SortSpecialField.DocumentIndexOrder))
                     .Size(options.PageSize);
             });
             if (results.IsValid)
