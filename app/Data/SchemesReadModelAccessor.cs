@@ -38,6 +38,7 @@ namespace MidnightLizard.Schemes.Querier.Data
                         nameof(PublicScheme.Description).ToUpper() + "^2",
                         nameof(PublicScheme.PublisherName).ToUpper()
                     },
+                    Boost = 1.5
                 });
             }
             if (options.Side != SchemeSide.none)
