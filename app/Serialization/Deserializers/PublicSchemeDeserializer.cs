@@ -53,7 +53,7 @@ namespace MidnightLizard.Schemes.Querier.Serialization
         }
     }
 
-    [Model(Version = "1.3")]
+    [Model(Version = ">=1.3 <9.3")]
     public class PublicSchemeModelDeserializer_v1_3 : PublicSchemeModelDeserializer_v9_3
     {
         public override void StartAdvancingToTheLatestVersion(PublicScheme model)
@@ -71,8 +71,8 @@ namespace MidnightLizard.Schemes.Querier.Serialization
         }
     }
 
-    [Model(Version = ">=9.3")]
-    public class PublicSchemeModelDeserializer_v9_3 : AbstractVersionedModelDeserializer<PublicScheme>
+    [Model(Version = ">=9.3 <10.1")]
+    public class PublicSchemeModelDeserializer_v9_3 : PublicSchemeModelDeserializer_v10_1
     {
         public override void StartAdvancingToTheLatestVersion(PublicScheme model)
         {
@@ -94,6 +94,25 @@ namespace MidnightLizard.Schemes.Querier.Serialization
             cs.linkHueGravity = 80;
             cs.borderHueGravity = 0;
             cs.scrollbarStyle = "true";
+
+            base.AdvanceToTheLatestVersion(model);
+        }
+    }
+
+    [Model(Version = ">=10.1")]
+    public class PublicSchemeModelDeserializer_v10_1 : AbstractVersionedModelDeserializer<PublicScheme>
+    {
+        public override void StartAdvancingToTheLatestVersion(PublicScheme model)
+        {
+            base.AdvanceToTheLatestVersion(model);
+        }
+
+        protected override void AdvanceToTheLatestVersion(PublicScheme model)
+        {
+            var cs = model.ColorScheme;
+
+            cs.hideBigBackgroundImages = true;
+            cs.maxBackgroundImageSize = 500;
 
             base.AdvanceToTheLatestVersion(model);
         }
