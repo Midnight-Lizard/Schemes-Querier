@@ -33,7 +33,7 @@ namespace MidnightLizard.Schemes.Querier.Schema
                    side: Enum.Parse<SchemeSide>(context.Arguments[this.ToCamelCase(nameof(SearchOptions.Side))].ToString()),
                    query: context.Arguments[this.ToCamelCase(nameof(SearchOptions.Query))] as string,
                    publisherId: context.Arguments[this.ToCamelCase(nameof(SearchOptions.PublisherId))] as string,
-                   pageSize: (int)context.Arguments[this.ToCamelCase(nameof(SearchOptions.PageSize))],
+                   pageSize: Math.Min((int)context.Arguments[this.ToCamelCase(nameof(SearchOptions.PageSize))], 1000),
                    cursor: context.Arguments[this.ToCamelCase(nameof(SearchOptions.Cursor))] as string
                 )));
         }
