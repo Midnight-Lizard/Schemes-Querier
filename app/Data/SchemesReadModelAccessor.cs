@@ -95,10 +95,24 @@ namespace MidnightLizard.Schemes.Querier.Data
             }
             var results = await this.elasticClient.SearchAsync<PublicScheme>(s =>
             {
-                var query = s.Query(q => q.Bool(cs => cs
-                    .Filter(filters.Select(f => new QueryContainer(f)).ToArray())
-                    .Should(shoulds.Select(f => new QueryContainer(f)).ToArray())
-                    .MinimumShouldMatch(MinimumShouldMatch.Fixed(1))));
+                var query = s.Query(q => filters.Count > 0 || shoulds.Count > 0
+                    ? q.Bool(cs =>
+                    {
+                        var boolQuery = cs;
+                        if (filters.Count > 0)
+                        {
+                            boolQuery = boolQuery
+                                .Filter(filters.Select(f => new QueryContainer(f)).ToArray());
+                        }
+                        if (shoulds.Count > 0)
+                        {
+                            boolQuery = boolQuery
+                                .Should(shoulds.Select(f => new QueryContainer(f)).ToArray())
+                                .MinimumShouldMatch(MinimumShouldMatch.Fixed(1));
+                        }
+                        return boolQuery;
+                    })
+                    : q.MatchAll());
                 if (!string.IsNullOrWhiteSpace(options.Cursor))
                 {
                     query = query.SearchAfter(Encoding.UTF8
