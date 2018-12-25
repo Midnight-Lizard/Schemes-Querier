@@ -27,10 +27,10 @@ namespace MidnightLizard.Schemes.Querier.Data
 
         public async Task<SearchResults<PublicScheme>> SearchSchemesAsync(SearchOptions options)
         {
-            var filters = new List<QueryBase>();
+            var shoulds = new List<QueryBase>();
             if (!string.IsNullOrWhiteSpace(options.Query))
             {
-                filters.Add(new SimpleQueryStringQuery
+                shoulds.Add(new SimpleQueryStringQuery
                 {
                     Query = options.Query,
                     Fields = new[] {
@@ -41,6 +41,7 @@ namespace MidnightLizard.Schemes.Querier.Data
                     Boost = 1.5
                 });
             }
+            var filters = new List<QueryBase>();
             if (options.Side != SchemeSide.none)
             {
                 var rangeQuery = new NumericRangeQuery
@@ -95,7 +96,9 @@ namespace MidnightLizard.Schemes.Querier.Data
             var results = await this.elasticClient.SearchAsync<PublicScheme>(s =>
             {
                 var query = s.Query(q => q.Bool(cs => cs
-                    .Filter(filters.Select(f => new QueryContainer(f)).ToArray())));
+                    .Filter(filters.Select(f => new QueryContainer(f)).ToArray())
+                    .Should(shoulds.Select(f => new QueryContainer(f)).ToArray())
+                    .MinimumShouldMatch(MinimumShouldMatch.Fixed(1))));
                 if (!string.IsNullOrWhiteSpace(options.Cursor))
                 {
                     query = query.SearchAfter(Encoding.UTF8
