@@ -62,22 +62,39 @@ namespace MidnightLizard.Schemes.Querier.Data
 
             if (options.Bg != HueFilter.any)
             {
+                var bgSatField = $"{nameof(PublicScheme.ColorScheme)}.{nameof(ColorScheme.backgroundGraySaturation)}".ToUpper();
+
                 if (options.Bg == HueFilter.gray)
                 {
                     var grayFilter = new NumericRangeQuery
                     {
-                        Field = $"{nameof(PublicScheme.ColorScheme)}.{nameof(ColorScheme.backgroundGraySaturation)}".ToUpper(),
+                        Field = bgSatField,
                         LessThan = 10
                     };
                     filters.Add(grayFilter);
-                }
-                else if (options.Bg == HueFilter.red)
-                {
-                    var field = $"{nameof(PublicScheme.ColorScheme)}.{nameof(ColorScheme.backgroundGrayHue)}".ToUpper();
-                    var redFilter = new BoolQuery
+                    var noBlueFilter = new NumericRangeQuery
                     {
-                        MinimumShouldMatch = 1,
-                        Should = new[] {
+                        Field = $"{nameof(PublicScheme.ColorScheme)}.{nameof(ColorScheme.blueFilter)}".ToUpper(),
+                        LessThan = 5
+                    };
+                    filters.Add(noBlueFilter);
+                }
+                else
+                {
+                    var notGrayFilter = new NumericRangeQuery
+                    {
+                        Field = bgSatField,
+                        GreaterThan = 1
+                    };
+                    filters.Add(notGrayFilter);
+
+                    if (options.Bg == HueFilter.red)
+                    {
+                        var field = $"{nameof(PublicScheme.ColorScheme)}.{nameof(ColorScheme.backgroundGrayHue)}".ToUpper();
+                        var redFilter = new BoolQuery
+                        {
+                            MinimumShouldMatch = 1,
+                            Should = new[] {
                             new QueryContainer(new NumericRangeQuery {
                                 Field = field,
                                 GreaterThan = 330
@@ -87,41 +104,42 @@ namespace MidnightLizard.Schemes.Querier.Data
                                 LessThan = 30
                             })
                         }
-                    };
-                    filters.Add(redFilter);
-                }
-                else
-                {
-                    var rangeQuery = new NumericRangeQuery
-                    {
-                        Field = $"{nameof(PublicScheme.ColorScheme)}.{nameof(ColorScheme.backgroundGrayHue)}".ToUpper(),
-                    };
-                    switch (options.Bg)
-                    {
-                        case HueFilter.yellow:
-                            rangeQuery.GreaterThan = 30;
-                            rangeQuery.LessThan = 90;
-                            break;
-                        case HueFilter.green:
-                            rangeQuery.GreaterThan = 90;
-                            rangeQuery.LessThan = 150;
-                            break;
-                        case HueFilter.cyan:
-                            rangeQuery.GreaterThan = 150;
-                            rangeQuery.LessThan = 210;
-                            break;
-                        case HueFilter.blue:
-                            rangeQuery.GreaterThan = 210;
-                            rangeQuery.LessThan = 270;
-                            break;
-                        case HueFilter.purple:
-                            rangeQuery.GreaterThan = 270;
-                            rangeQuery.LessThan = 330;
-                            break;
-                        default:
-                            break;
+                        };
+                        filters.Add(redFilter);
                     }
-                    filters.Add(rangeQuery);
+                    else
+                    {
+                        var rangeQuery = new NumericRangeQuery
+                        {
+                            Field = $"{nameof(PublicScheme.ColorScheme)}.{nameof(ColorScheme.backgroundGrayHue)}".ToUpper(),
+                        };
+                        switch (options.Bg)
+                        {
+                            case HueFilter.yellow:
+                                rangeQuery.GreaterThan = 30;
+                                rangeQuery.LessThan = 90;
+                                break;
+                            case HueFilter.green:
+                                rangeQuery.GreaterThan = 90;
+                                rangeQuery.LessThan = 150;
+                                break;
+                            case HueFilter.cyan:
+                                rangeQuery.GreaterThan = 150;
+                                rangeQuery.LessThan = 210;
+                                break;
+                            case HueFilter.blue:
+                                rangeQuery.GreaterThan = 210;
+                                rangeQuery.LessThan = 270;
+                                break;
+                            case HueFilter.purple:
+                                rangeQuery.GreaterThan = 270;
+                                rangeQuery.LessThan = 330;
+                                break;
+                            default:
+                                break;
+                        }
+                        filters.Add(rangeQuery);
+                    }
                 }
             }
 
