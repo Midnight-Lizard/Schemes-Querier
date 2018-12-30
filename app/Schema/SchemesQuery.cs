@@ -22,7 +22,8 @@ namespace MidnightLizard.Schemes.Querier.Schema
                 "search", "Search Midnight Lizard's color schemes",
                 new QueryArguments(
                     new QueryArgument<SchemeListEnum> { Name = nameof(SearchOptions.List), DefaultValue = SchemeList.full.ToString() },
-                    new QueryArgument<SchemeSideEnum> { Name = nameof(SearchOptions.Side), DefaultValue = SchemeSide.none.ToString() },
+                    new QueryArgument<SchemeSideEnum> { Name = nameof(SearchOptions.Side), DefaultValue = SchemeSide.any.ToString() },
+                    new QueryArgument<HueFilterEnum> { Name = nameof(SearchOptions.Bg), DefaultValue = HueFilter.any.ToString() },
                     new QueryArgument<StringGraphType> { Name = nameof(SearchOptions.Query), DefaultValue = "" },
                     new QueryArgument<IdGraphType> { Name = nameof(SearchOptions.PublisherId), DefaultValue = "" },
                     new QueryArgument<IntGraphType> { Name = nameof(SearchOptions.PageSize), DefaultValue = 10 },
@@ -31,6 +32,7 @@ namespace MidnightLizard.Schemes.Querier.Schema
                 resolve: async context => await accessor.SearchSchemesAsync(new SearchOptions(
                    list: Enum.Parse<SchemeList>(context.Arguments[this.ToCamelCase(nameof(SearchOptions.List))].ToString()),
                    side: Enum.Parse<SchemeSide>(context.Arguments[this.ToCamelCase(nameof(SearchOptions.Side))].ToString()),
+                   bg: Enum.Parse<HueFilter>(context.Arguments[this.ToCamelCase(nameof(SearchOptions.Bg))].ToString()),
                    query: context.Arguments[this.ToCamelCase(nameof(SearchOptions.Query))] as string,
                    publisherId: context.Arguments[this.ToCamelCase(nameof(SearchOptions.PublisherId))] as string,
                    pageSize: Math.Min((int)context.Arguments[this.ToCamelCase(nameof(SearchOptions.PageSize))], 1000),

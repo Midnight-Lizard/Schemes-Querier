@@ -179,6 +179,7 @@ namespace MidnightLizard.Schemes.Querier.Schema
                 this.testSearchOptions = new SearchOptions(
                     query: "test search query",
                     side: SchemeSide.dark,
+                    bg: HueFilter.yellow,
                     list: SchemeList.full,
                     cursor: "MSwwMGE3NGZmYi01OTg1LTQzNTQtOTIyZS0xZDU2NTc0NzYwNDM=",
                     publisherId: "ee769863-e4e8-43f6-8de7-500a203dfb87",
@@ -190,6 +191,7 @@ namespace MidnightLizard.Schemes.Querier.Schema
                     {
                         query = this.testSearchOptions.Query,
                         side = this.testSearchOptions.Side.ToString(),
+                        bg = this.testSearchOptions.Bg.ToString(),
                         list = this.testSearchOptions.List.ToString(),
                         cursor = this.testSearchOptions.Cursor,
                         publisherId = this.testSearchOptions.PublisherId,

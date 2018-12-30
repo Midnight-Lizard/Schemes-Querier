@@ -2,7 +2,7 @@
 {
     public enum SchemeSide
     {
-        none,
+        any,
         dark,
         light
     }
@@ -16,5 +16,17 @@
         liked,
         ml,
         com
+    }
+
+    public enum HueFilter
+    {
+        any,
+        red,
+        yellow,
+        green,
+        cyan,
+        blue,
+        purple,
+        gray
     }
 }
