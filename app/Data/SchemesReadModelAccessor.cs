@@ -62,7 +62,7 @@ namespace MidnightLizard.Schemes.Querier.Data
 
             if (options.Bg != HueFilter.any)
             {
-                if (options.Bg != HueFilter.gray)
+                if (options.Bg == HueFilter.gray)
                 {
                     var grayFilter = new NumericRangeQuery
                     {
@@ -71,7 +71,7 @@ namespace MidnightLizard.Schemes.Querier.Data
                     };
                     filters.Add(grayFilter);
                 }
-                else if (options.Bg != HueFilter.red)
+                else if (options.Bg == HueFilter.red)
                 {
                     var field = $"{nameof(PublicScheme.ColorScheme)}.{nameof(ColorScheme.backgroundGrayHue)}".ToUpper();
                     var redFilter = new BoolQuery
