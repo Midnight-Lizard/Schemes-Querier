@@ -215,8 +215,16 @@ namespace MidnightLizard.Schemes.Querier.Data
                 return query
                     .Sort(ss => ss
                         .Descending(SortSpecialField.Score)
-                        .Descending(x => x.Likes)
-                        .Descending(x => x.Favorites)
+                        .Field(f => f
+                            .Field(x => x.Likes)
+                            .Order(SortOrder.Descending)
+                            .UnmappedType(FieldType.Integer)
+                            .MissingLast())
+                        .Field(f => f
+                            .Field(x => x.Favorites)
+                            .Order(SortOrder.Descending)
+                            .UnmappedType(FieldType.Integer)
+                            .MissingLast())
                         .Ascending(SortSpecialField.DocumentIndexOrder))
                     .Size(options.PageSize);
             });
