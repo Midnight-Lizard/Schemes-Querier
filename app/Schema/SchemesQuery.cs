@@ -27,17 +27,32 @@ namespace MidnightLizard.Schemes.Querier.Schema
                     new QueryArgument<StringGraphType> { Name = nameof(SearchOptions.Query), DefaultValue = "" },
                     new QueryArgument<IdGraphType> { Name = nameof(SearchOptions.CurrentUserId), DefaultValue = "" },
                     new QueryArgument<IntGraphType> { Name = nameof(SearchOptions.PageSize), DefaultValue = 10 },
-                    new QueryArgument<StringGraphType> { Name = nameof(SearchOptions.Cursor), DefaultValue = "" }
+                    new QueryArgument<StringGraphType> { Name = nameof(SearchOptions.Cursor), DefaultValue = "" },
+                    new QueryArgument<IdGraphType>
+                    {
+                        Name = nameof(SearchOptions.PublisherId),
+                        Description = $@"This argument is deprecated. Use [{
+                            this.ToCamelCase(nameof(SearchOptions.CurrentUserId))}] instead",
+                        DefaultValue = ""
+                    }
                 ),
-                resolve: async context => await accessor.SearchSchemesAsync(new SearchOptions(
-                   list: Enum.Parse<SchemeList>(context.Arguments[this.ToCamelCase(nameof(SearchOptions.List))].ToString()),
-                   side: Enum.Parse<SchemeSide>(context.Arguments[this.ToCamelCase(nameof(SearchOptions.Side))].ToString()),
-                   bg: Enum.Parse<HueFilter>(context.Arguments[this.ToCamelCase(nameof(SearchOptions.Bg))].ToString()),
-                   query: context.Arguments[this.ToCamelCase(nameof(SearchOptions.Query))] as string,
-                   currentUserId: context.Arguments[this.ToCamelCase(nameof(SearchOptions.CurrentUserId))] as string,
-                   pageSize: Math.Min((int)context.Arguments[this.ToCamelCase(nameof(SearchOptions.PageSize))], 1000),
-                   cursor: context.Arguments[this.ToCamelCase(nameof(SearchOptions.Cursor))] as string
-                )));
+                resolve: async context =>
+                {
+                    var currentUserId = context.Arguments[this.ToCamelCase(nameof(SearchOptions.CurrentUserId))] as string;
+                    if (string.IsNullOrEmpty(currentUserId))
+                    {
+                        currentUserId = context.Arguments[this.ToCamelCase(nameof(SearchOptions.PublisherId))] as string;
+                    }
+                    return await accessor.SearchSchemesAsync(new SearchOptions(
+                        list: Enum.Parse<SchemeList>(context.Arguments[this.ToCamelCase(nameof(SearchOptions.List))].ToString()),
+                        side: Enum.Parse<SchemeSide>(context.Arguments[this.ToCamelCase(nameof(SearchOptions.Side))].ToString()),
+                        bg: Enum.Parse<HueFilter>(context.Arguments[this.ToCamelCase(nameof(SearchOptions.Bg))].ToString()),
+                        query: context.Arguments[this.ToCamelCase(nameof(SearchOptions.Query))] as string,
+                        pageSize: Math.Min((int)context.Arguments[this.ToCamelCase(nameof(SearchOptions.PageSize))], 1000),
+                        cursor: context.Arguments[this.ToCamelCase(nameof(SearchOptions.Cursor))] as string,
+                        currentUserId: currentUserId
+                        ));
+                });
         }
 
         private string ToCamelCase(string str)

@@ -1,4 +1,6 @@
-﻿namespace MidnightLizard.Schemes.Querier.Models
+﻿using System;
+
+namespace MidnightLizard.Schemes.Querier.Models
 {
     public class SearchOptions
     {
@@ -7,6 +9,8 @@
         public HueFilter Bg { get; }
         public string Query { get; }
         public string CurrentUserId { get; }
+        [Obsolete(nameof(CurrentUserId))]
+        public string PublisherId { get; }
         public int PageSize { get; }
         public string Cursor { get; }
 
