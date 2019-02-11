@@ -6,7 +6,7 @@
         public SchemeSide Side { get; }
         public HueFilter Bg { get; }
         public string Query { get; }
-        public string PublisherId { get; }
+        public string CurrentUserId { get; }
         public int PageSize { get; }
         public string Cursor { get; }
 
@@ -15,7 +15,7 @@
             SchemeSide side,
             HueFilter bg,
             string query,
-            string publisherId,
+            string currentUserId,
             int pageSize,
             string cursor)
         {
@@ -23,7 +23,7 @@
             this.Side = side;
             this.Bg = bg;
             this.Query = query;
-            this.PublisherId = publisherId;
+            this.CurrentUserId = currentUserId;
             this.PageSize = pageSize;
             this.Cursor = cursor;
         }

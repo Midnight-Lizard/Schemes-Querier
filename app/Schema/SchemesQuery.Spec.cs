@@ -25,6 +25,7 @@ namespace MidnightLizard.Schemes.Querier.Schema
         private readonly HttpClient testClient;
         private readonly ISchemesReadModelAccessor testAccessor;
         private readonly PublicScheme testScheme;
+        private readonly string testUserId = "ee769863-e4e8-43f6-8de7-500a203dfb87";
 
         public SchemesQuerySpec()
         {
@@ -50,6 +51,10 @@ namespace MidnightLizard.Schemes.Querier.Schema
                 Name = "test-color-scheme",
                 PublisherName = "test-publisher",
                 PublisherId = "test-publisher-id",
+                Likes = 1,
+                LikedBy = new[] { this.testUserId },
+                Favorites = 1,
+                FavoritedBy = new[] { this.testUserId },
                 ColorScheme = new ColorScheme
                 {
                     colorSchemeId = "-",
@@ -81,10 +86,16 @@ namespace MidnightLizard.Schemes.Querier.Schema
             public DetailsSpec() : base()
             {
                 var csProps = string.Join(' ', typeof(ColorScheme).GetProperties().Select(p => p.Name));
-                var testQuery = $@"query ($id: ID) {{
+                var testQuery = $@"query ($id: ID, $currentUserId: ID) {{
                                      details(id: $id) {{
                                        id
                                        name
+                                       likes
+                                       liked(by: $currentUserId)
+                                       likedBy
+                                       favorites
+                                       favorited(by: $currentUserId)
+                                       favoritedBy
                                        colorScheme {{
                                          {csProps}
                                        }}
@@ -98,7 +109,7 @@ namespace MidnightLizard.Schemes.Querier.Schema
                 var json = JsonConvert.SerializeObject(new
                 {
                     query = testQuery,
-                    variables = new { id = this.testScheme.Id }
+                    variables = new { id = this.testScheme.Id, currentUserId = this.testUserId }
                 });
                 this.jsonContent = new StringContent(json, Encoding.UTF8, MediaTypeNames.Application.Json);
                 this.testAccessor.ReadModelAsync(this.testScheme.Id).Returns(this.testScheme);
@@ -140,6 +151,15 @@ namespace MidnightLizard.Schemes.Querier.Schema
                 result["name"].Value<string>().Should().Be(this.testScheme.Name);
                 result["publisher"]["id"].Value<string>().Should().Be(this.testScheme.PublisherId);
 
+                result["liked"].Value<bool>().Should().BeTrue();
+                result["favorited"].Value<bool>().Should().BeTrue();
+
+                result["likes"].Value<int>().Should().Be(1);
+                result["favorites"].Value<int>().Should().Be(1);
+
+                result["likedBy"].First().Value<string>().Should().Be(this.testUserId);
+                result["favoritedBy"].First().Value<string>().Should().Be(this.testUserId);
+
                 var colorSchemeJson = result["colorScheme"];
                 foreach (var prop in typeof(ColorScheme).GetProperties())
                 {
@@ -159,12 +179,18 @@ namespace MidnightLizard.Schemes.Querier.Schema
             public SearchSpec() : base()
             {
                 var csProps = string.Join(' ', typeof(ColorScheme).GetProperties().Select(p => p.Name));
-                var testQuery = $@"query ($query: String, $side: SchemeSide, $list: SchemeList, $publisherId: ID, $cursor: String, $pageSize: Int) {{
-                                     search(query: $query, side: $side, list: $list, publisherId: $publisherId, cursor: $cursor, pageSize: $pageSize) {{
+                var testQuery = $@"query ($query: String, $side: SchemeSide, $list: SchemeList, $currentUserId: ID, $cursor: String, $pageSize: Int) {{
+                                     search(query: $query, side: $side, list: $list, currentUserId: $currentUserId, cursor: $cursor, pageSize: $pageSize) {{
                                        cursor
                                        results {{
                                          id
                                          name
+                                         likes
+                                         liked(by: $currentUserId)
+                                         likedBy
+                                         favorites
+                                         favorited(by: $currentUserId)
+                                         favoritedBy
                                          publisher {{
                                            id
                                            name
@@ -182,7 +208,7 @@ namespace MidnightLizard.Schemes.Querier.Schema
                     bg: HueFilter.yellow,
                     list: SchemeList.full,
                     cursor: "MSwwMGE3NGZmYi01OTg1LTQzNTQtOTIyZS0xZDU2NTc0NzYwNDM=",
-                    publisherId: "ee769863-e4e8-43f6-8de7-500a203dfb87",
+                    currentUserId: this.testUserId,
                     pageSize: 100);
                 var json = JsonConvert.SerializeObject(new
                 {
@@ -194,7 +220,7 @@ namespace MidnightLizard.Schemes.Querier.Schema
                         bg = this.testSearchOptions.Bg.ToString(),
                         list = this.testSearchOptions.List.ToString(),
                         cursor = this.testSearchOptions.Cursor,
-                        publisherId = this.testSearchOptions.PublisherId,
+                        currentUserId = this.testSearchOptions.CurrentUserId,
                         pageSize = this.testSearchOptions.PageSize
                     }
                 });
@@ -223,7 +249,7 @@ namespace MidnightLizard.Schemes.Querier.Schema
                     opt.Cursor == this.testSearchOptions.Cursor &&
                     opt.List == this.testSearchOptions.List &&
                     opt.PageSize == this.testSearchOptions.PageSize &&
-                    opt.PublisherId == this.testSearchOptions.PublisherId &&
+                    opt.CurrentUserId == this.testSearchOptions.CurrentUserId &&
                     opt.Query == this.testSearchOptions.Query &&
                     opt.Side == this.testSearchOptions.Side));
             }
@@ -239,6 +265,15 @@ namespace MidnightLizard.Schemes.Querier.Schema
                 scheme["id"].Value<string>().Should().Be(this.testScheme.Id);
                 scheme["name"].Value<string>().Should().Be(this.testScheme.Name);
                 scheme["publisher"]["id"].Value<string>().Should().Be(this.testScheme.PublisherId);
+
+                scheme["liked"].Value<bool>().Should().BeTrue();
+                scheme["favorited"].Value<bool>().Should().BeTrue();
+
+                scheme["likes"].Value<int>().Should().Be(1);
+                scheme["favorites"].Value<int>().Should().Be(1);
+
+                scheme["likedBy"].First().Value<string>().Should().Be(this.testUserId);
+                scheme["favoritedBy"].First().Value<string>().Should().Be(this.testUserId);
 
                 var colorSchemeJson = scheme["colorScheme"];
                 foreach (var prop in typeof(ColorScheme).GetProperties())

@@ -143,7 +143,7 @@ namespace MidnightLizard.Schemes.Querier.Data
                 }
             }
 
-            if (!string.IsNullOrWhiteSpace(options.PublisherId))
+            if (!string.IsNullOrWhiteSpace(options.CurrentUserId))
             {
                 switch (options.List)
                 {
@@ -151,14 +151,22 @@ namespace MidnightLizard.Schemes.Querier.Data
                         filters.Add(new MatchPhraseQuery
                         {
                             Field = nameof(PublicScheme.PublisherId).ToUpper(),
-                            Query = options.PublisherId
+                            Query = options.CurrentUserId
                         });
                         break;
                     case SchemeList.fav:
-                        filters.Add(new MatchNoneQuery());
+                        filters.Add(new MatchPhraseQuery
+                        {
+                            Field = nameof(PublicScheme.FavoritedBy).ToUpper(),
+                            Query = options.CurrentUserId
+                        });
                         break;
                     case SchemeList.liked:
-                        filters.Add(new MatchNoneQuery());
+                        filters.Add(new MatchPhraseQuery
+                        {
+                            Field = nameof(PublicScheme.LikedBy).ToUpper(),
+                            Query = options.CurrentUserId
+                        });
                         break;
                     default:
                         break;
@@ -205,7 +213,10 @@ namespace MidnightLizard.Schemes.Querier.Data
                         .ToArray());
                 }
                 return query
-                    .Sort(ss => ss.Descending(SortSpecialField.Score).Ascending(SortSpecialField.DocumentIndexOrder))
+                    .Sort(ss => ss
+                        .Descending(SortSpecialField.Score)
+                        .Descending(x => x.Likes)
+                        .Descending(x => x.Favorites))
                     .Size(options.PageSize);
             });
             if (results.IsValid)

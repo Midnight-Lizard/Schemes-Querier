@@ -10,5 +10,11 @@
         public string PublisherId { get; set; }
         public string PublisherName { get; set; }
         public bool PublisherCommunity { get; set; }
+
+        public int Likes { get; set; }
+        public string[] LikedBy { get; set; }
+
+        public int Favorites { get; set; }
+        public string[] FavoritedBy { get; set; }
     }
 }

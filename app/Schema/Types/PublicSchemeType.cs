@@ -25,10 +25,37 @@ namespace MidnightLizard.Schemes.Querier.Schema.Types
             this.Field(x => x.Name);
             this.Field(x => x.Description);
             this.Field(x => x.Generation);
+            this.Field(x => x.Likes, nullable: true);
+            this.Field(x => x.LikedBy, nullable: true);
+            this.Field(x => x.Favorites, nullable: true);
+            this.Field(x => x.FavoritedBy, nullable: true);
+
+            this.Field<BooleanGraphType>("liked", "True if liked by the specified user", new QueryArguments(
+                    new QueryArgument<IdGraphType> { Name = "by", DefaultValue = null }
+                ), resolve: context =>
+            {
+                var userId = context.Arguments["by"] as string;
+                return !string.IsNullOrEmpty(userId) &&
+                    context.Source.LikedBy != null &&
+                    context.Source.LikedBy.Contains(userId);
+            });
+
+            this.Field<BooleanGraphType>("favorited", "True if favorited by the specified user", new QueryArguments(
+                    new QueryArgument<IdGraphType> { Name = "by", DefaultValue = null }
+                ), resolve: context =>
+            {
+                var userId = context.Arguments["by"] as string;
+                return !string.IsNullOrEmpty(userId) &&
+                    context.Source.FavoritedBy != null &&
+                    context.Source.FavoritedBy.Contains(userId);
+            });
+
             this.Field<ColorSchemeType>(nameof(ColorScheme), "Color scheme",
                 resolve: context => context.Source.ColorScheme);
+
             this.Field<PublisherType>(nameof(Publisher), "Color scheme publisher",
                 resolve: context => new Publisher(context.Source));
+
             this.Field<ListGraphType<ScreenshotType>>(nameof(Screenshot) + "s", "Color scheme screenshots",
                 resolve: context => this.CreateScreenshots(context.Source));
         }
