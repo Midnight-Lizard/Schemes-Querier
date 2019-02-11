@@ -216,7 +216,8 @@ namespace MidnightLizard.Schemes.Querier.Data
                     .Sort(ss => ss
                         .Descending(SortSpecialField.Score)
                         .Descending(x => x.Likes)
-                        .Descending(x => x.Favorites))
+                        .Descending(x => x.Favorites)
+                        .Ascending(SortSpecialField.DocumentIndexOrder))
                     .Size(options.PageSize);
             });
             if (results.IsValid)
