@@ -216,12 +216,12 @@ namespace MidnightLizard.Schemes.Querier.Data
                     .Sort(ss => ss
                         .Descending(SortSpecialField.Score)
                         .Field(f => f
-                            .Field(x => x.Likes)
+                            .Field(nameof(PublicScheme.Likes).ToUpper())
                             .Order(SortOrder.Descending)
                             .UnmappedType(FieldType.Integer)
                             .MissingLast())
                         .Field(f => f
-                            .Field(x => x.Favorites)
+                            .Field(nameof(PublicScheme.Favorites).ToUpper())
                             .Order(SortOrder.Descending)
                             .UnmappedType(FieldType.Integer)
                             .MissingLast())
