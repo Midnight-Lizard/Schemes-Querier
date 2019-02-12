@@ -31,7 +31,7 @@ namespace MidnightLizard.Schemes.Querier.Schema.Types
             this.Field(x => x.FavoritedBy, nullable: true);
 
             this.Field<BooleanGraphType>("liked", "True if liked by the specified user", new QueryArguments(
-                    new QueryArgument<IdGraphType> { Name = "by", DefaultValue = null }
+                    new QueryArgument<IdGraphType> { Name = "by", DefaultValue = "" }
                 ), resolve: context =>
             {
                 var userId = context.Arguments["by"] as string;
@@ -41,7 +41,7 @@ namespace MidnightLizard.Schemes.Querier.Schema.Types
             });
 
             this.Field<BooleanGraphType>("favorited", "True if favorited by the specified user", new QueryArguments(
-                    new QueryArgument<IdGraphType> { Name = "by", DefaultValue = null }
+                    new QueryArgument<IdGraphType> { Name = "by", DefaultValue = "" }
                 ), resolve: context =>
             {
                 var userId = context.Arguments["by"] as string;
