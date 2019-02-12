@@ -4,7 +4,6 @@ using GraphQL.Server;
 using GraphQL.Server.Ui.Playground;
 using GraphQL.Types;
 using IdentityServer4.AccessTokenValidation;
-using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -92,11 +91,6 @@ namespace MidnightLizard.Schemes.Querier
             {
                 app.UseDeveloperExceptionPage();
             }
-            else
-            {
-                // app.UseHsts();
-                // app.UseHttpsRedirection();
-            }
 
             var corsConfig = new CorsConfig();
             this.Configuration.Bind(corsConfig);
@@ -110,11 +104,14 @@ namespace MidnightLizard.Schemes.Querier
 
             app.UseGraphQL<ISchema>(Routes.Query);
 
-            app.UseGraphQLPlayground(new GraphQLPlaygroundOptions
+            if (env.IsDevelopment())
             {
-                Path = Routes.Playground,
-                GraphQLEndPoint = Routes.Query
-            });
+                app.UseGraphQLPlayground(new GraphQLPlaygroundOptions
+                {
+                    Path = Routes.Playground,
+                    GraphQLEndPoint = Routes.Query
+                });
+            }
         }
     }
 }
