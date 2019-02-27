@@ -51,7 +51,7 @@ namespace MidnightLizard.Schemes.Querier.Schema
                         pageSize: Math.Min((int)context.Arguments[this.ToCamelCase(nameof(SearchOptions.PageSize))], 1000),
                         cursor: context.Arguments[this.ToCamelCase(nameof(SearchOptions.Cursor))] as string,
                         currentUserId: currentUserId
-                        ));
+                        ), context.CancellationToken);
                 });
         }
 

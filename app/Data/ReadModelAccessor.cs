@@ -4,13 +4,14 @@ using MidnightLizard.Schemes.Querier.Models;
 using MidnightLizard.Schemes.Querier.Serialization.Common;
 using Nest;
 using System;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace MidnightLizard.Schemes.Querier.Data
 {
     public interface IReadModelAccessor<TModel> where TModel : VersionedModel
     {
-        Task<TModel> ReadModelAsync(string modelId);
+        Task<TModel> ReadModelAsync(string modelId, CancellationToken cancellationToken = default);
     }
 
     public abstract class ReadModelAccessor<TModel> : IReadModelAccessor<TModel> where TModel : VersionedModel
@@ -47,9 +48,11 @@ namespace MidnightLizard.Schemes.Querier.Data
                      .TypeName(this.TypeName));
         }
 
-        public async Task<TModel> ReadModelAsync(string modelId)
+        public async Task<TModel> ReadModelAsync(string modelId, CancellationToken cancellationToken = default)
         {
-            var result = await this.elasticClient.GetAsync<TModel>(new DocumentPath<TModel>(modelId));
+            var result = await this.elasticClient.GetAsync<TModel>(
+                new DocumentPath<TModel>(modelId),
+                cancellationToken: cancellationToken);
             if (!result.IsValid)
             {
                 throw new ApplicationException("Failed to read model from the store",

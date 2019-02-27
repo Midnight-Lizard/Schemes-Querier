@@ -15,6 +15,7 @@ using System.Net;
 using System.Net.Http;
 using System.Net.Mime;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace MidnightLizard.Schemes.Querier.Schema
@@ -226,11 +227,12 @@ namespace MidnightLizard.Schemes.Querier.Schema
                 });
                 this.testNextCursor = "next-cursor";
                 this.jsonContent = new StringContent(json, Encoding.UTF8, MediaTypeNames.Application.Json);
-                this.testAccessor.SearchSchemesAsync(Arg.Any<SearchOptions>()).Returns(new SearchResults<PublicScheme>
-                {
-                    Cursor = testNextCursor,
-                    Results = new[] { this.testScheme }
-                });
+                this.testAccessor.SearchSchemesAsync(Arg.Any<SearchOptions>(), Arg.Any<CancellationToken>())
+                    .Returns(new SearchResults<PublicScheme>
+                    {
+                        Cursor = testNextCursor,
+                        Results = new[] { this.testScheme }
+                    });
             }
 
             [It(nameof(SchemesQuery) + "/search")]
@@ -251,7 +253,8 @@ namespace MidnightLizard.Schemes.Querier.Schema
                     opt.PageSize == this.testSearchOptions.PageSize &&
                     opt.CurrentUserId == this.testSearchOptions.CurrentUserId &&
                     opt.Query == this.testSearchOptions.Query &&
-                    opt.Side == this.testSearchOptions.Side));
+                    opt.Side == this.testSearchOptions.Side),
+                    Arg.Any<CancellationToken>());
             }
 
             [It(nameof(SchemesQuery) + "/search")]

@@ -6,13 +6,14 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace MidnightLizard.Schemes.Querier.Data
 {
     public interface ISchemesReadModelAccessor : IReadModelAccessor<PublicScheme>
     {
-        Task<SearchResults<PublicScheme>> SearchSchemesAsync(SearchOptions options);
+        Task<SearchResults<PublicScheme>> SearchSchemesAsync(SearchOptions options, CancellationToken cancellationToken = default);
     }
 
     public class SchemesReadModelAccessor : ReadModelAccessor<PublicScheme>, ISchemesReadModelAccessor
@@ -25,7 +26,7 @@ namespace MidnightLizard.Schemes.Querier.Data
         {
         }
 
-        public async Task<SearchResults<PublicScheme>> SearchSchemesAsync(SearchOptions options)
+        public async Task<SearchResults<PublicScheme>> SearchSchemesAsync(SearchOptions options, CancellationToken cancellationToken = default)
         {
             var shoulds = new List<QueryBase>();
             if (!string.IsNullOrWhiteSpace(options.Query))
@@ -227,7 +228,7 @@ namespace MidnightLizard.Schemes.Querier.Data
                             .MissingLast())
                         .Ascending(SortSpecialField.DocumentIndexOrder))
                     .Size(options.PageSize);
-            });
+            }, cancellationToken);
             if (results.IsValid)
             {
                 return new SearchResults<PublicScheme>
