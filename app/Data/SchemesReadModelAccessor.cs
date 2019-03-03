@@ -98,11 +98,11 @@ namespace MidnightLizard.Schemes.Querier.Data
                             Should = new[] {
                             new QueryContainer(new NumericRangeQuery {
                                 Field = field,
-                                GreaterThan = 330
+                                GreaterThanOrEqualTo = 330
                             }),
                             new QueryContainer(new NumericRangeQuery {
                                 Field = field,
-                                LessThan = 30
+                                LessThanOrEqualTo = 30
                             })
                         }
                         };
@@ -117,24 +117,24 @@ namespace MidnightLizard.Schemes.Querier.Data
                         switch (options.Bg)
                         {
                             case HueFilter.yellow:
-                                rangeQuery.GreaterThan = 30;
-                                rangeQuery.LessThan = 90;
+                                rangeQuery.GreaterThanOrEqualTo = 30;
+                                rangeQuery.LessThanOrEqualTo = 90;
                                 break;
                             case HueFilter.green:
-                                rangeQuery.GreaterThan = 90;
-                                rangeQuery.LessThan = 150;
+                                rangeQuery.GreaterThanOrEqualTo = 90;
+                                rangeQuery.LessThanOrEqualTo = 150;
                                 break;
                             case HueFilter.cyan:
-                                rangeQuery.GreaterThan = 150;
-                                rangeQuery.LessThan = 210;
+                                rangeQuery.GreaterThanOrEqualTo = 150;
+                                rangeQuery.LessThanOrEqualTo = 210;
                                 break;
                             case HueFilter.blue:
-                                rangeQuery.GreaterThan = 210;
-                                rangeQuery.LessThan = 270;
+                                rangeQuery.GreaterThanOrEqualTo = 210;
+                                rangeQuery.LessThanOrEqualTo = 270;
                                 break;
                             case HueFilter.purple:
-                                rangeQuery.GreaterThan = 270;
-                                rangeQuery.LessThan = 330;
+                                rangeQuery.GreaterThanOrEqualTo = 270;
+                                rangeQuery.LessThanOrEqualTo = 330;
                                 break;
                             default:
                                 break;
